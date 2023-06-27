@@ -6,7 +6,7 @@ module.exports = {
   execute(member) {
     const { user, guild } = member;
     const welcomeChannel =
-      member.guild.channels.cache.get("665168439261921290");
+      member.guild.channels.cache.get("665168439261921290"); //* qui da inserire l'id del canale testuale dove si deve mandare l'embed
     const welcomeMessage = `Benvenuto <@${member.id}> nel discord di Ladows`;
     const memberRole = "254601565430743041";
 
