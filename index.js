@@ -5,6 +5,7 @@ require("dotenv").config();
 const TOKEN = process.env.DISCORD_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 const GUILD_ID = process.env.CLIENT_ID;
+const keep_alive = require("./Handlers/keep_alive");
 
 const { loadEvents } = require("./Handlers/eventHandler");
 const { loadCommands } = require("./Handlers/commandHandler");
