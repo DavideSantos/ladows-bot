@@ -4,11 +4,16 @@ const { GuildMember, Embed } = require("discord.js");
 module.exports = {
   name: "guildMemberAdd",
   execute(member) {
+    const canaleDiscordUfficiale = "665168439261921290"; //* id canale welcome del discord ufficiale
+    const canaleDiscordDiProva = "1229841317991809058"; //* id canale discord di prova
+    const memberRoleDiscordUfficiale = "254601565430743041"; //* id ruolo discord ufficiale
+    const memberRoleDiscordDiProva = "1230933894736642160"; //* id ruolo discord di prova
+
     const { user, guild } = member;
-    const welcomeChannel =
-      member.guild.channels.cache.get("665168439261921290"); //* qui da inserire l'id del canale testuale dove si deve mandare l'embed
+    const welcomeChannel = member.guild.channels.cache.get(
+      canaleDiscordUfficiale
+    ); //* qui da inserire l'id del canale testuale dove si deve mandare l'embed
     const welcomeMessage = `Benvenuto <@${member.id}> nel discord di Ladows`;
-    const memberRole = "254601565430743041";
 
     const welcomeEmbed = new EmbedBuilder()
       .setAuthor({
@@ -29,6 +34,6 @@ module.exports = {
       .setTimestamp();
 
     welcomeChannel.send({ embeds: [welcomeEmbed] });
-    member.roles.add(memberRole);
+    member.roles.add(memberRoleDiscordUfficiale);
   },
 };
