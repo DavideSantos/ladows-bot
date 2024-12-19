@@ -36,40 +36,11 @@ process.on("unhandledRejection", (error) => {
   console.error("Errore non gestito:", error);
 });
 
-client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-
-  const command = client.commands.get(interaction.commandName);
-  if (!command) return;
-
-  try {
-    await command.execute(interaction, client);
-  } catch (error) {
-    console.error(error);
-    try {
-      if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({
-          content:
-            "Si è verificato un errore durante l'esecuzione del comando.",
-          ephemeral: true,
-        });
-      } else {
-        await interaction.reply({
-          content:
-            "Si è verificato un errore durante l'esecuzione del comando.",
-          ephemeral: true,
-        });
-      }
-    } catch (e) {
-      console.error("Errore nel gestire l'errore:", e);
-    }
-  }
-});
-
-// Rimuovere la funzione deployCommands() completamente
-
-// Modificare il login per usare solo loadCommands
-client.login(TOKEN).then(() => {
-  loadEvents(client);
-  loadCommands(client);
-});
+// Login to Discord with your app's token
+client
+  .login(TOKEN)
+  .then(async () => {
+    await loadEvents(client);
+    await loadCommands(client);
+  })
+  .catch(console.error);

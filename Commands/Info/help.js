@@ -24,7 +24,7 @@ module.exports = {
         .setThumbnail(client.user.displayAvatarURL())
         .setTimestamp();
 
-      // Verifica se il guild è disponibile
+      // Check if the guild is available
       if (interaction.guild) {
         embed.setFooter({
           text: interaction.guild.name,
@@ -34,7 +34,7 @@ module.exports = {
 
       const categories = {};
 
-      // Verifica se client.commands esiste e ha comandi
+      // Check if client.commands exists and has commands
       if (!client.commands || client.commands.size === 0) {
         return await interaction.editReply(
           "Nessun comando disponibile al momento."
@@ -72,7 +72,7 @@ module.exports = {
     } catch (error) {
       console.error("Errore nel comando help:", error);
 
-      // Se la risposta non è stata ancora inviata
+      // If the reply has not been sent yet
       if (!interaction.replied && !interaction.deferred) {
         await interaction.reply({
           content:

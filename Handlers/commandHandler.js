@@ -4,6 +4,8 @@ function loadCommands(client) {
   const table = new ascii().setHeading("Commands", "Category", "Status");
 
   let commandsArray = [];
+
+  // Clear the collection before reloading
   client.commands.clear();
 
   const commandsFolder = fs.readdirSync("./Commands/");
@@ -37,14 +39,12 @@ function loadCommands(client) {
   }
 
   if (commandsArray.length > 0) {
-    client.application.commands
+    return client.application.commands
       .set(commandsArray)
       .then(() => {
         console.log(table.toString(), "\nComandi registrati con successo");
       })
-      .catch((error) => {
-        console.error("Errore durante la registrazione dei comandi:", error);
-      });
+      .catch(console.error);
   }
 }
 
