@@ -4,8 +4,6 @@ function loadCommands(client) {
   const table = new ascii().setHeading("Commands", "Category", "Status");
 
   let commandsArray = [];
-
-  // Clear the existing commands collection
   client.commands.clear();
 
   const commandsFolder = fs.readdirSync("./Commands/");
@@ -16,29 +14,38 @@ function loadCommands(client) {
       .filter((file) => file.endsWith(".js"));
 
     for (const file of commandFiles) {
-      const commandFile = require(`../Commands/${folder}/${file}`);
+      try {
+        delete require.cache[require.resolve(`../Commands/${folder}/${file}`)];
+        const commandFile = require(`../Commands/${folder}/${file}`);
 
-      // Remove the command cache to avoid duplicates
-      delete require.cache[require.resolve(`../Commands/${folder}/${file}`)];
+        if (!commandFile.data || !commandFile.execute) {
+          table.addRow(file, folder, "❌ Invalid");
+          continue;
+        }
 
-      commandFile.category = folder;
-      const commandName = commandFile.data.name;
+        commandFile.category = folder;
+        const commandName = commandFile.data.name;
 
-      client.commands.set(commandName, commandFile);
-      commandsArray.push(commandFile.data.toJSON());
-      table.addRow(file, folder, "loaded");
+        client.commands.set(commandName, commandFile);
+        commandsArray.push(commandFile.data.toJSON());
+        table.addRow(file, folder, "✅ Valid");
+      } catch (error) {
+        console.error(`Error loading command ${file}:`, error);
+        table.addRow(file, folder, "❌ Error");
+      }
     }
   }
 
-  // Update global commands
-  client.application.commands
-    .set(commandsArray)
-    .then(() => {
-      console.log(table.toString(), "\nComandi caricati con successo");
-    })
-    .catch((error) => {
-      console.error("Errore durante il caricamento dei comandi:", error);
-    });
+  if (commandsArray.length > 0) {
+    client.application.commands
+      .set(commandsArray)
+      .then(() => {
+        console.log(table.toString(), "\nComandi registrati con successo");
+      })
+      .catch((error) => {
+        console.error("Errore durante la registrazione dei comandi:", error);
+      });
+  }
 }
 
 module.exports = { loadCommands };

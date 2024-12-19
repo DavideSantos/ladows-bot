@@ -66,44 +66,10 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-// function before client.login
-async function deployCommands() {
-  try {
-    const commands = [];
-    const foldersPath = path.join(__dirname, "Commands");
-    const commandFolders = fs.readdirSync(foldersPath);
+// Rimuovere la funzione deployCommands() completamente
 
-    for (const folder of commandFolders) {
-      const commandsPath = path.join(foldersPath, folder);
-      const commandFiles = fs
-        .readdirSync(commandsPath)
-        .filter((file) => file.endsWith(".js"));
-
-      for (const file of commandFiles) {
-        const filePath = path.join(commandsPath, file);
-        const command = require(filePath);
-        if ("data" in command && "execute" in command) {
-          commands.push(command.data.toJSON());
-        }
-      }
-    }
-
-    const rest = new REST().setToken(TOKEN);
-    console.log(`Iniziando il refresh di ${commands.length} (/) comandi.`);
-
-    await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
-      body: commands,
-    });
-
-    console.log("Comandi registrati con successo.");
-  } catch (error) {
-    console.error("Errore durante il deploy dei comandi:", error);
-  }
-}
-
-// Modify client.login to include command deployment
-client.login(TOKEN).then(async () => {
-  await deployCommands();
+// Modificare il login per usare solo loadCommands
+client.login(TOKEN).then(() => {
   loadEvents(client);
   loadCommands(client);
 });
