@@ -1,15 +1,19 @@
-const {
-  SlashCommandBuilder,
-  CommandInteraction,
-  PermissionFlagsBits,
-} = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("ping")
-    .setDescription("pong!")
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator), //permesso settato solo per administratori
-  execute(interaction) {
-    interaction.reply({ content: "Pong", ephemeral: true }); //settato ephemeral su true il messaggio e visibile solo a te
+    .setDescription("Mostra la latenza del bot"),
+  async execute(interaction) {
+    const sent = await interaction.reply({
+      content: "Calcolo ping...",
+      fetchReply: true,
+    });
+
+    const latency = sent.createdTimestamp - interaction.createdTimestamp;
+
+    await interaction.editReply({
+      content: `🏓 Pong!\nLatenza bot: ${latency}ms\nLatenza API: ${interaction.client.ws.ping}ms`,
+    });
   },
 };
