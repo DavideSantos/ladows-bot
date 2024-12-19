@@ -5,15 +5,16 @@ module.exports = {
     .setName("ping")
     .setDescription("Mostra la latenza del bot"),
   async execute(interaction) {
-    const sent = await interaction.reply({
-      content: "Calcolo ping...",
-      fetchReply: true,
-    });
-
-    const latency = sent.createdTimestamp - interaction.createdTimestamp;
-
-    await interaction.editReply({
-      content: `🏓 Pong!\nLatenza bot: ${latency}ms\nLatenza API: ${interaction.client.ws.ping}ms`,
-    });
+    try {
+      await interaction.deferReply();
+      const ping = interaction.client.ws.ping;
+      await interaction.editReply(`🏓 Pong!\nLatenza: ${ping}ms`);
+    } catch (error) {
+      console.error("Errore nel comando ping:", error);
+      await interaction.reply({
+        content: "Si è verificato un errore durante l'esecuzione del comando.",
+        ephemeral: true,
+      });
+    }
   },
 };
