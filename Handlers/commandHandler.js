@@ -5,6 +5,9 @@ function loadCommands(client) {
 
   let commandsArray = [];
 
+  // Clear the existing commands collection
+  client.commands.clear();
+
   const commandsFolder = fs.readdirSync("./Commands/");
 
   for (const folder of commandsFolder) {
@@ -15,20 +18,27 @@ function loadCommands(client) {
     for (const file of commandFiles) {
       const commandFile = require(`../Commands/${folder}/${file}`);
 
+      // Remove the command cache to avoid duplicates
+      delete require.cache[require.resolve(`../Commands/${folder}/${file}`)];
+
       commandFile.category = folder;
+      const commandName = commandFile.data.name;
 
-      client.commands.set(commandFile.data.name, commandFile);
-
+      client.commands.set(commandName, commandFile);
       commandsArray.push(commandFile.data.toJSON());
-
       table.addRow(file, folder, "loaded");
-      continue;
     }
   }
 
-  client.application.commands.set(commandsArray);
-
-  return console.log(table.toString(), "\n Loaded Commands");
+  // Update global commands
+  client.application.commands
+    .set(commandsArray)
+    .then(() => {
+      console.log(table.toString(), "\nComandi caricati con successo");
+    })
+    .catch((error) => {
+      console.error("Errore durante il caricamento dei comandi:", error);
+    });
 }
 
 module.exports = { loadCommands };
