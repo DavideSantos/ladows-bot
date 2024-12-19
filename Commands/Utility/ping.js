@@ -4,6 +4,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("ping")
     .setDescription("Mostra la latenza del bot"),
+  category: "Utility",
   async execute(interaction) {
     try {
       await interaction.deferReply();

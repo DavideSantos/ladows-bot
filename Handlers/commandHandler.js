@@ -1,7 +1,7 @@
 function loadCommands(client) {
   const ascii = require("ascii-table");
   const fs = require("fs");
-  const table = new ascii().setHeading("Commands", "Status");
+  const table = new ascii().setHeading("Commands", "Category", "Status");
 
   let commandsArray = [];
 
@@ -15,11 +15,13 @@ function loadCommands(client) {
     for (const file of commandFiles) {
       const commandFile = require(`../Commands/${folder}/${file}`);
 
+      commandFile.category = folder;
+
       client.commands.set(commandFile.data.name, commandFile);
 
       commandsArray.push(commandFile.data.toJSON());
 
-      table.addRow(file, "loaded");
+      table.addRow(file, folder, "loaded");
       continue;
     }
   }
