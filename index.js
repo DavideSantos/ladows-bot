@@ -1,10 +1,18 @@
 // Require the necessary discord.js classes
-const { Client, GatewayIntentBits, Collection } = require("discord.js");
+const {
+  Client,
+  GatewayIntentBits,
+  Collection,
+  REST,
+  Routes,
+} = require("discord.js");
+const fs = require("node:fs");
+const path = require("node:path");
 // variabili dei token del bot
 require("dotenv").config();
 const TOKEN = process.env.DISCORD_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
-const GUILD_ID = process.env.CLIENT_ID;
+const GUILD_ID = process.env.GUILD_ID;
 const keep_alive = require("./Handlers/keep_alive");
 
 const { loadEvents } = require("./Handlers/eventHandler");
