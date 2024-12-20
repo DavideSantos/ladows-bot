@@ -7,6 +7,16 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
   async execute(interaction, client) {
+    // Controllo aggiuntivo per gli admin
+    if (
+      !interaction.member.permissions.has(PermissionFlagsBits.Administrator)
+    ) {
+      return interaction.reply({
+        content: "❌ Solo gli amministratori possono usare questo comando!",
+        ephemeral: true,
+      });
+    }
+
     await interaction.deferReply({ ephemeral: true });
 
     try {

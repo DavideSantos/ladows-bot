@@ -29,13 +29,20 @@ module.exports = {
       "Fortnite",
       "League of Legends",
       "Valorant",
+      "Escape from Tarkov",
     ];
 
-    if (newGame && !oldGame && gamesOfInterest.includes(newGame.name)) {
+    if (newGame && !oldGame) {
       try {
-        await newPresence.member.send({
-          content: `Lota, ho visto che stai giocando a ${newGame.name}!, chiudilo prima che ti becchi un ban!`,
-        });
+        if (newGame.name === "Escape from Tarkov") {
+          await newPresence.member.send({
+            content: "Nikita è sempre il daddy! OPACHKI! 🔫",
+          });
+        } else if (gamesOfInterest.includes(newGame.name)) {
+          await newPresence.member.send({
+            content: `Lota, ho visto che stai giocando a ${newGame.name}!, chiudilo prima che ti becchi un ban!`,
+          });
+        }
       } catch (error) {
         console.error("Non posso inviare DM a questo utente");
       }
