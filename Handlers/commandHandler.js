@@ -39,8 +39,9 @@ function loadCommands(client) {
   }
 
   if (commandsArray.length > 0) {
-    return client.application.commands
-      .set(commandsArray)
+    return client.guilds.cache
+      .get(process.env.GUILD_ID) // Usa la variabile d'ambiente
+      .commands.set(commandsArray)
       .then(() => {
         console.log(table.toString(), "\nComandi registrati con successo");
       })
