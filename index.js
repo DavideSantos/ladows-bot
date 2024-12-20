@@ -20,10 +20,19 @@ process.on("unhandledRejection", (error) => {
   console.error("Errore non gestito:", error);
 });
 
-client
-  .login(process.env.DISCORD_TOKEN)
-  .then(async () => {
+async function initialize() {
+  try {
+    await client.login(process.env.DISCORD_TOKEN);
+    console.log("Bot logged in");
+
     await loadEvents(client);
+    console.log("Eventi caricati");
+
     await loadCommands(client);
-  })
-  .catch(console.error);
+    console.log("Comandi caricati");
+  } catch (error) {
+    console.error("Errore durante l'inizializzazione:", error);
+  }
+}
+
+initialize();

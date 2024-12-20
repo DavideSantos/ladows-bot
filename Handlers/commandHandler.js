@@ -1,11 +1,21 @@
-function loadCommands(client) {
+async function loadCommands(client) {
   const ascii = require("ascii-table");
   const fs = require("fs");
   const table = new ascii().setHeading("Commands", "Category", "Status");
 
   let commandsArray = [];
 
-  // Clear the collection before reloading
+  // Clear existing commands first
+  const guild = client.guilds.cache.get(process.env.GUILD_ID);
+  if (!guild) {
+    console.error("Guild non trovata!");
+    return;
+  }
+
+  // Clear all existing guild commands
+  await guild.commands.set([]);
+
+  // Clear the collection
   client.commands.clear();
 
   const commandsFolder = fs.readdirSync("./Commands/");
@@ -39,13 +49,19 @@ function loadCommands(client) {
   }
 
   if (commandsArray.length > 0) {
-    return client.guilds.cache
-      .get(process.env.GUILD_ID) // Usa la variabile d'ambiente
-      .commands.set(commandsArray)
-      .then(() => {
-        console.log(table.toString(), "\nComandi registrati con successo");
-      })
-      .catch(console.error);
+    try {
+      // Registra SOLO i comandi guild
+      const guild = client.guilds.cache.get(process.env.GUILD_ID);
+      if (!guild) {
+        throw new Error("Guild non trovata!");
+      }
+
+      const data = await guild.commands.set(commandsArray);
+      console.log(`🔰 Registrati ${data.size} comandi nella guild`);
+      console.log(table.toString());
+    } catch (error) {
+      console.error("Errore nella registrazione dei comandi:", error);
+    }
   }
 }
 
