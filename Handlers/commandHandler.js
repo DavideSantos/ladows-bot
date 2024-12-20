@@ -5,18 +5,11 @@ async function loadCommands(client) {
 
   let commandsArray = [];
 
-  // Clear existing commands first
   const guild = client.guilds.cache.get(process.env.GUILD_ID);
   if (!guild) {
     console.error("Guild non trovata!");
     return;
   }
-
-  // Clear all existing guild commands
-  await guild.commands.set([]);
-
-  // Clear the collection
-  client.commands.clear();
 
   const commandsFolder = fs.readdirSync("./Commands/");
 
