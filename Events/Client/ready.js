@@ -6,7 +6,7 @@ module.exports = {
   execute(client) {
     console.log(`${client.user.tag} è online!`);
 
-    // Imposta il Rich Presence
+    // Set the Rich Presence
     client.user.setPresence({
       activities: [
         {
@@ -17,7 +17,7 @@ module.exports = {
       status: "online",
     });
 
-    // Aggiorna il Rich Presence ogni 10 minuti con stati diversi
+    // Update the Rich Presence every 10 minutes with different statuses
     setInterval(() => {
       const activities = [
         {
@@ -40,6 +40,6 @@ module.exports = {
         activities: [activity],
         status: "online",
       });
-    }, 600000); // 10 minuti
+    }, 600000); // 10 minutes
   },
 };
