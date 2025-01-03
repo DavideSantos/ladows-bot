@@ -1,0 +1,17 @@
+{
+  "twitch": {
+    "clientId": "bncwjvvef0o0dnw2xzbckb6k1jazuj",
+    "clientSecret": "lw2yma1hswcwo70x59kqwcqjmzt4ic",
+    "checkInterval": 60000,
+    "channels": [
+      {
+        "name": "ladows",
+        "discordChannelId": "561908306373771265"
+      },
+      {
+        "name": "malosoron",
+        "discordChannelId": "561908306373771265"
+      }
+    ]
+  }
+}
